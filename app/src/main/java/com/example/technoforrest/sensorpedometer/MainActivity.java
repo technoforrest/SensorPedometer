@@ -40,9 +40,8 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
     private Sensor sensor;
     private SensorManager manager;
     private TextView count;
-    static final String LOG_TAG = "MainActivity";
-    static final int GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = 1;
-    private GoogleApiClient.Builder mClient;
+    static final String TAG = "MainActivity";
+
     private Boolean activityRunning;
 
     @Override
@@ -58,6 +57,10 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
 
 
     }
+
+    /**
+     * determines if the app is running
+     */
     public void onResume(){
         super.onResume();
         activityRunning = true;
@@ -68,12 +71,20 @@ public class MainActivity extends AppCompatActivity implements SensorEventListen
             Toast.makeText(this, "Count sensor error!", Toast.LENGTH_LONG).show();
         }
     }
+
+    /**
+     * determines if the app is no longer running
+     */
     @Override
     public void onPause(){
         super.onPause();
         activityRunning = false;
     }
 
+    /**
+     * updates the TextView when steps are increased
+     * @param event is the sensor that is receiving the steps
+     */
     @Override
     public void onSensorChanged(SensorEvent event) {
         if(activityRunning){
