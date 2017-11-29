@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "789170020417",
+    "project_id": "walkgonzagapedometer"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:789170020417:android:2f3edb2c671fa401",
+        "android_client_info": {
+          "package_name": "com.example.technoforrest.sensorpedometer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "789170020417-t1q87nequ368h40g5r741cn61923ehiv.apps.googleusercontent.com",
+          "client_type": 3
+        },
+        {
+          "client_id": "789170020417-crkuoi55tgakdgo3q3e5q9702jkveudc.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.technoforrest.sensorpedometer",
+            "certificate_hash": "11427dfc812472d33ad79119a978c90246e44281"
+          }
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDTIOvKIMwaL8e_k4B7cQfUjo1XUlTAMJ4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 1,
+          "other_platform_oauth_client": []
+        },
+        "ads_service": {
+          "status": 1
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
