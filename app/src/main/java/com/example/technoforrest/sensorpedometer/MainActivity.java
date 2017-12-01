@@ -25,13 +25,8 @@ import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
-import android.widget.EditText;
 import android.widget.TextView;
 
-import java.time.DayOfWeek;
-import java.time.LocalDate;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.Locale;
 
 import static android.provider.Contacts.SettingsColumns.KEY;
@@ -44,8 +39,14 @@ public class MainActivity extends AppCompatActivity {
     private Boolean zeroSteps;
     private String dayName;
     private float stepsDontCount;
-    final String PREFERENCE_FILENAME1 = "savedSteps";
-    final String KEY_TEXT = "savedStepsKey";
+    final String PREFERENCE_FILENAME1 = "DayOfWeek";
+    final String PREFERENCE_FILENAME2 = "savedSteps";
+    final String KEY_TEXT1 = "savedDaysKey";
+    final String KEY_TEXT2 = "savedStepsKey";
+    private SharedPreferences sharedPreferencesDay;
+    private SharedPreferences sharedPreferencesSteps;
+    private String stringPrefs1;
+    private String stringPrefs2;
 
     @RequiresApi(api = Build.VERSION_CODES.O)
     @Override
@@ -60,11 +61,16 @@ public class MainActivity extends AppCompatActivity {
         zeroSteps = true;
         dayName = new SimpleDateFormat("EEEE", Locale.ENGLISH).format(System.currentTimeMillis());
         Log.d(TAG, "onCreate: " + dayName);
-        SharedPreferences sharedPreferences = this.getSharedPreferences(PREFERENCE_FILENAME1, Context.MODE_PRIVATE);
-        String string = sharedPreferences.getString(KEY_TEXT, "");
-        TextView textView = findViewById(R.id.today);
+        sharedPreferencesDay = this.getSharedPreferences(PREFERENCE_FILENAME1, Context.MODE_PRIVATE);
+        stringPrefs1 = sharedPreferencesDay.getString(KEY_TEXT1, "");
+        sharedPreferencesSteps = this.getSharedPreferences(PREFERENCE_FILENAME2, Context.MODE_PRIVATE);
+        stringPrefs2 = sharedPreferencesSteps.getString(KEY_TEXT2, "");
+        TextView textView1 = findViewById(R.id.today);
+        TextView textView2 = findViewById(R.id.savedSteps);
 
-        textView.setText(string);
+        textView1.setText(stringPrefs1);
+        textView2.setText(stringPrefs2);
+
 
         sensorRegister();
     }
@@ -76,11 +82,16 @@ public class MainActivity extends AppCompatActivity {
     protected void onStop() {
         super.onStop();
 
-        SharedPreferences sharedPreferences = this.getSharedPreferences(PREFERENCE_FILENAME1, Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString(KEY_TEXT, count.getText().toString() + " " + dayName );
-        Log.d(TAG, "onStop: preferences storing");
-        editor.commit(); // don't forget this!
+        SharedPreferences sharedPreferencesDay = this.getSharedPreferences(PREFERENCE_FILENAME1, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor1 = sharedPreferencesDay.edit();
+        editor1.putString(KEY_TEXT1, dayName );
+        Log.d(TAG, "onStop: DAY OF WEEK storing");
+        editor1.commit(); // don't forget this!
+        SharedPreferences sharedPreferencesSteps = this.getSharedPreferences(PREFERENCE_FILENAME2, Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor2 = sharedPreferencesSteps.edit();
+        editor2.putString(KEY_TEXT2, count.getText().toString() );
+        Log.d(TAG, "onStop: DAY OF WEEK storing");
+        editor2.commit();
     }
 
     /**
