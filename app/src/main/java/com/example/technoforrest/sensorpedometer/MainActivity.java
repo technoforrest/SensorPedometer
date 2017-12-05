@@ -9,9 +9,10 @@ package com.example.technoforrest.sensorpedometer;
           Tihomir RAdeff. Develop simple Step Counter in Android Studio. https://youtu.be/CNGMWnmldaU
           https://stackoverflow.com/questions/42661678/
                android-how-to-get-the-sensor-step-counter-data-only-one-day
+          http://www.android-graphview.org/
 
   @author Danielle Forrest
- * @version v1.0 11/29/17
+ * @version v1.0 12/8/17
  */
 
 import android.content.Context;
@@ -40,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
     static final String TAG = "MainActivity";
     protected TextView stepsTxt;
     private SensorManager manager;
-    private int stepsDontCount;
-    private int milestone;
     private int newSteps;
 
 
@@ -69,7 +68,9 @@ public class MainActivity extends AppCompatActivity {
         });
     }
 
-
+    /**
+     * registers the step counter and calls to shared preferences to store the steps
+     */
     public void sensorRegister(){
 
         manager.registerListener(new SensorEventListener() {
@@ -96,6 +97,12 @@ public class MainActivity extends AppCompatActivity {
                                  }, manager.getDefaultSensor(Sensor.TYPE_STEP_COUNTER),
                 SensorManager.SENSOR_DELAY_UI);
     }
+
+    /**
+     * writes steps to shared preferences file
+     * @param key the current date
+     * @param value the number of steps counted for the date
+     */
     public void writePreferenceSet(String key, int value){
         Log.d(TAG, "writePreferenceSet: ");
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
@@ -104,11 +111,22 @@ public class MainActivity extends AppCompatActivity {
         editor.apply();
 
     }
+
+    /**
+     * gets the steps for today to shared preferences
+     * @param key is the current date
+     * @return returns the steps for the current date
+     */
     public int getPreferences(String key){
         Log.d(TAG, "getPreferences: ");
         SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
         return sharedPreferences.getInt(key, 0);
     }
+
+    /**
+     * Computes the current date
+     * @return the current date
+     */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public String dateTime(){
         Log.d(TAG, "dateTime: ");
