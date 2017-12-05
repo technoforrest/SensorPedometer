@@ -7,48 +7,13 @@
         android:orientation="vertical"
         tools:context="com.example.technoforrest.sensorpedometer.HistoryDisplayActivity">
 
-        <TextView
-            android:id="@+id/sunday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Sunday" />
 
-        <TextView
-            android:id="@+id/monday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Monday" />
-
-        <TextView
-            android:id="@+id/tuesday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Tuesday" />
-
-        <TextView
-            android:id="@+id/wednesday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Wednesday" />
-
-        <TextView
-            android:id="@+id/thursday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Thursday" />
-
-        <TextView
-            android:id="@+id/friday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Friday" />
-
-        <TextView
-            android:id="@+id/saturday"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="Saturday" />
+    <com.jjoe64.graphview.GraphView
+        android:layout_width="match_parent"
+        android:layout_height="200dip"
+        android:id="@+id/graph" />
 
     </LinearLayout>
+
 
 

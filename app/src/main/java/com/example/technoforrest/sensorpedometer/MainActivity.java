@@ -63,7 +63,7 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(MainActivity.this, HistoryDisplayActivity.class);
-                
+
                 startActivity(intent);
             }
         });
@@ -113,6 +113,7 @@ public class MainActivity extends AppCompatActivity {
     public String dateTime(){
         Log.d(TAG, "dateTime: ");
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+        Log.d(TAG, "dateTime: " + date.format(Calendar.getInstance().getTime()));
         return date.format(Calendar.getInstance().getTime());
     }
 
