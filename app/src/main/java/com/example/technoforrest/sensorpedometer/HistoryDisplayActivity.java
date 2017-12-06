@@ -5,6 +5,7 @@ import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,11 +15,12 @@ import com.jjoe64.graphview.series.DataPoint;
 import com.jjoe64.graphview.series.LineGraphSeries;
 
 import java.util.Calendar;
-//get shared preferences from previous activity
-//get dates from last 7 days
-//assign shared preferences values to graph
+
+
+
 //label graph
 //fix navigation between activities
+//remove shared preferences older than 7 days
 
 public class HistoryDisplayActivity extends AppCompatActivity {
     final static String TAG = "HistoryDisplayActvity: ";
@@ -40,14 +42,29 @@ public class HistoryDisplayActivity extends AppCompatActivity {
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public void getGraph(){
-        int day1 = 0;
-        int day2 = 0;
-        int day3 = 0;
-        int day4 = 0;
-        int day5 = 0;
-        int day6 = 0;
-        int day7 = getPreferences(dateTime());
-        Log.d(TAG, "getGraph: " + day7);
+
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        Calendar cal = Calendar.getInstance();
+        String dateArr[] = new String[7];
+                // get starting date
+        cal.add(Calendar.DAY_OF_YEAR, -6);
+
+        // loop adding one day in each iteration
+        for(int i = 0; i< 7; i++){
+            cal.add(Calendar.DAY_OF_YEAR, 1);
+            dateArr[i] = sdf.format(cal.getTime());
+            Log.d(TAG, "getLast7Dates: " + sdf.format(cal.getTime()));
+        }
+        Log.d(TAG, "getGraph: " + dateArr[6]);
+        int day1 = getPreferences(dateArr[0]);
+        int day2 = getPreferences(dateArr[1]);
+        int day3 = getPreferences(dateArr[2]);
+        int day4 = getPreferences(dateArr[3]);
+        int day5 = getPreferences(dateArr[4]);
+        int day6 = getPreferences(dateArr[5]);
+        int day7 = getPreferences(dateArr[6]);
+
+        Log.d(TAG, "getGraph: " + day6);
         GraphView graph = (GraphView) findViewById(R.id.graph);
         //how to get steps for the last 7 days by date?
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
@@ -68,7 +85,7 @@ public class HistoryDisplayActivity extends AppCompatActivity {
      * @return the number of steps taken on the specific day accessed
      */
     public int getPreferences(String key){
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        final SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
         return sharedPreferences.getInt(key, 0);
     }
 
@@ -78,17 +95,10 @@ public class HistoryDisplayActivity extends AppCompatActivity {
     @RequiresApi(api = Build.VERSION_CODES.N)
     public String dateTime(){
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
+        Log.d(TAG, "dateTime: " + date.format(Calendar.getInstance().getTime()));
         return date.format(Calendar.getInstance().getTime());
     }
 
-    /**
-     * this function will calculate the date for the past 7 days
-     * @return returns the dates for the past 7 days UNFINISHED
-     */
-    public String otherDates(){
-        String otherDatesStr = "nothing";
-        return otherDatesStr;
 
-    }
 
 }
