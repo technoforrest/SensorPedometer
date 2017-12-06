@@ -10,6 +10,7 @@ package com.example.technoforrest.sensorpedometer;
           https://stackoverflow.com/questions/42661678/
                android-how-to-get-the-sensor-step-counter-data-only-one-day
           http://www.android-graphview.org/
+          History icon by Josy_Dom_Alexis at Pixabay
 
   @author Danielle Forrest
  * @version v1.0 12/8/17
@@ -28,6 +29,8 @@ import android.os.Build;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
+import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
@@ -58,15 +61,15 @@ public class MainActivity extends AppCompatActivity {
         Log.d(TAG, "onCreate: " );
         manager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
         sensorRegister();
-        Button historyBtn = findViewById(R.id.historyBtn);
-        historyBtn.setOnClickListener(new View.OnClickListener() {
+        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View v) {
+            public void onClick(View view) {
                 Intent intent = new Intent(MainActivity.this, HistoryDisplayActivity.class);
-
                 startActivity(intent);
             }
         });
+
     }
 
     /**
