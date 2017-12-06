@@ -80,14 +80,11 @@ public class MainActivity extends AppCompatActivity {
                                      @Override
                                      public void onSensorChanged(SensorEvent event) {
                                          int todayStep = getPreferences(dateTime());// steps saved
-                                                                // for today from earlier session
-
-                                         //subtracts the values stored in the phone so only the
-                                         // steps taken since the app show
+                                                                            //from previous session
                                          newSteps = todayStep + 1;
-                                         //Log.d(TAG, "onSensorChanged: newSteps=" + newSteps);
+                                         Log.d(TAG, "onSensorChanged: newSteps=" + newSteps);
                                          writePreferenceSet(dateTime(), newSteps);
-                                         //Log.d(TAG, "onSensorChanged: write to preference = " + todayStep + newSteps);
+                                         Log.d(TAG, "onSensorChanged: write to preference = " + todayStep + newSteps);
                                          stepsTxt.setText(getPreferences(dateTime()) + "");//update
                                                                 // Textview to current day's steps
                                      }
@@ -120,7 +117,7 @@ public class MainActivity extends AppCompatActivity {
      */
     public int getPreferences(String key){
         Log.d(TAG, "getPreferences: ");
-        SharedPreferences sharedPreferences = getPreferences(MODE_PRIVATE);
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
         return sharedPreferences.getInt(key, 0);
     }
 
@@ -130,7 +127,6 @@ public class MainActivity extends AppCompatActivity {
      */
     @RequiresApi(api = Build.VERSION_CODES.N)
     public String dateTime(){
-        Log.d(TAG, "dateTime: ");
         SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
         Log.d(TAG, "dateTime: " + date.format(Calendar.getInstance().getTime()));
         return date.format(Calendar.getInstance().getTime());
