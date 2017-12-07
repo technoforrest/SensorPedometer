@@ -30,15 +30,14 @@ import android.os.Bundle;
 import android.preference.PreferenceManager;
 import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.View;
-import android.widget.Button;
 import android.widget.TextView;
 
 import java.util.Calendar;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,8 +59,9 @@ public class MainActivity extends AppCompatActivity {
 
         Log.d(TAG, "onCreate: " );
         manager = (SensorManager)getSystemService(Context.SENSOR_SERVICE);
+        getLast7Days();
         sensorRegister();
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
+        FloatingActionButton fab = findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -87,7 +87,7 @@ public class MainActivity extends AppCompatActivity {
                                          newSteps = todayStep + 1;
                                          Log.d(TAG, "onSensorChanged: newSteps=" + newSteps);
                                          writePreferenceSet(dateTime(), newSteps);
-                                         Log.d(TAG, "onSensorChanged: write to preference = " + todayStep + newSteps);
+
                                          stepsTxt.setText(getPreferences(dateTime()) + "");//update
                                                                 // Textview to current day's steps
                                      }
@@ -121,9 +121,21 @@ public class MainActivity extends AppCompatActivity {
     public int getPreferences(String key){
         Log.d(TAG, "getPreferences: ");
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
-        return sharedPreferences.getInt(key, 0);
+        if(sharedPreferences.contains(key)) {
+            return sharedPreferences.getInt(key, 0);
+        }else return -1;
     }
 
+    /**
+     * deletes all sharedpreferences
+     */
+    public void deletePreferences(){
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.clear();
+        editor.apply();
+
+    }
     /**
      * Computes the current date
      * @return the current date
@@ -135,6 +147,42 @@ public class MainActivity extends AppCompatActivity {
         return date.format(Calendar.getInstance().getTime());
     }
 
+    /**
+     * getLast7Days saves the last 7 days keys and values to arrays, deletes old preferences,
+     * and saves last 7 days to shared preferences, so sharedpreferences don't get weighted down.
+     */
+    @RequiresApi(api = Build.VERSION_CODES.N)
+    public void getLast7Days(){
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+
+        Calendar cal = Calendar.getInstance();// today
+        Calendar tomorrow = Calendar.getInstance();
+        tomorrow.add(Calendar.DATE, 1);//tomorrow
+        String tomorrowStr = sdf.format(tomorrow.getTime());
+
+        String stepArr[]= new String[7];
+        Integer intArr[] = new Integer[7];
+
+        // get starting date
+        cal.add(Calendar.DATE, -7);
+
+        // loop adding one day in each iteration
+        //assigns dates as preference keys to array
+        //gets preferences (steps) based on keys
+        for(int i = 0; i< 7; i++){
+            cal.add(Calendar.DATE, 1);
+            stepArr[i] = (sdf.format(cal.getTime()));//key for shared preferences
+            intArr[i] = getPreferences(stepArr[i]);
+        }
+        //delete all shared preferences and rewrite them
+        deletePreferences();
+
+        for(int i = 0; i < 7; i++){
+            writePreferenceSet(stepArr[i], intArr[i]);
+        }
+
+        Log.d(TAG, "getLast7Days: " + getPreferences(stepArr[5]));
+    }
 
 
 

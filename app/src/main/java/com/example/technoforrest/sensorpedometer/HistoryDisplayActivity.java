@@ -1,6 +1,19 @@
 package com.example.technoforrest.sensorpedometer;
+/*
+  This program detects user steps based on native step counter, records the steps,
+  and displays them for the user.
+  CPSC 312-01, Fall 2017
+  Final Project
+ Sources: developer.android.com/reference/android/hardware/Sensor
+          Tihomir RAdeff. Develop simple Step Counter in Android Studio. https://youtu.be/CNGMWnmldaU
+          https://stackoverflow.com/questions/42661678/
+               android-how-to-get-the-sensor-step-counter-data-only-one-day
+          http://www.android-graphview.org/
+          History icon by Josy_Dom_Alexis at Pixabay
 
-import android.content.Intent;
+  @author Danielle Forrest
+ * @version v1.0 12/8/17
+ */
 import android.content.SharedPreferences;
 import android.icu.text.SimpleDateFormat;
 import android.os.Build;
@@ -31,12 +44,14 @@ public class HistoryDisplayActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_history_display);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         ActionBar ab = getSupportActionBar();
-        ab.setDisplayHomeAsUpEnabled(true);
+        if (ab != null) {
+            ab.setDisplayHomeAsUpEnabled(true);
+        }
         getGraph();
-        Intent intent = getIntent();
+
 
     }
 
@@ -64,7 +79,7 @@ public class HistoryDisplayActivity extends AppCompatActivity {
         Log.d(TAG, "getGraph: " + dateArr[6]);
 
 
-        GraphView graph = (GraphView) findViewById(R.id.graph);
+        GraphView graph = findViewById(R.id.graph);
         //how to get steps for the last 7 days by date?
         LineGraphSeries<DataPoint> series = new LineGraphSeries<>(new DataPoint[] {
                 new DataPoint(arrDate[0], getPreferences(dateArr[0])),//label date and steps by date
@@ -75,12 +90,15 @@ public class HistoryDisplayActivity extends AppCompatActivity {
                 new DataPoint(arrDate[5], getPreferences(dateArr[5])),
                 new DataPoint(arrDate[6], getPreferences(dateArr[6]))
         });
+
         graph.addSeries(series);
+
         Log.d(TAG, "getGraph: " + series);
         // set date label formatter
         graph.getGridLabelRenderer().setLabelFormatter(new DateAsXAxisLabelFormatter(this));
         graph.getGridLabelRenderer().setNumHorizontalLabels(7); // only 4 because of the space
         graph.getGridLabelRenderer().setHorizontalLabelsAngle(135);
+
 
 // set manual x bounds to have nice steps
         Log.d(TAG, "getGraph: " );
@@ -103,25 +121,9 @@ public class HistoryDisplayActivity extends AppCompatActivity {
         return sharedPreferences.getInt(key, 0);
     }
 
-    /**
-     * @return returns the current date
-     */
-    @RequiresApi(api = Build.VERSION_CODES.N)
-    public String dateTime(){
-        SimpleDateFormat date = new SimpleDateFormat("yyyy-MM-dd");
-        Log.d(TAG, "dateTime: " + date.format(Calendar.getInstance().getTime()));
-        return date.format(Calendar.getInstance().getTime());
-    }
 
-    /**
-     * Removes shared preferences by date
-     * @param key shared preference key is the date is was created
-     */
-    public void removePreferences(String key){
-        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(getBaseContext());
-        sharedPreferences.edit().remove(key).apply();
 
-    }
+
 
 
 

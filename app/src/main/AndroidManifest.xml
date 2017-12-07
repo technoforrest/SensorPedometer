@@ -3,9 +3,7 @@
     package="com.example.technoforrest.sensorpedometer">
 
     <uses-feature android:name="android.hardware.sensor.stepcounter" />
-    <uses-feature android:name="android.hardware.sensor.stepdetector" />
 
-    <uses-permission android:name="android.permission.INTERNET" />
 
     <application
         android:allowBackup="true"
