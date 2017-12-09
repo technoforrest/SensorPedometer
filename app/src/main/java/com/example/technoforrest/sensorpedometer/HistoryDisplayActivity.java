@@ -32,10 +32,6 @@ import com.jjoe64.graphview.series.LineGraphSeries;
 import java.util.Calendar;
 import java.util.Date;
 
-
-//label graph
-//remove shared preferences older than 7 days
-
 public class HistoryDisplayActivity extends AppCompatActivity {
     final static String TAG = "HistoryDisplayActvity: ";
 
@@ -104,7 +100,11 @@ public class HistoryDisplayActivity extends AppCompatActivity {
         Log.d(TAG, "getGraph: " );
         graph.getViewport().setMinX(arrDate[0].getTime());
         graph.getViewport().setMaxX(arrDate[6].getTime());
+        graph.getViewport().setMinY(0);
+        //graph.getViewport().setMaxY(20000);
         graph.getViewport().setXAxisBoundsManual(true);
+        graph.getViewport().setYAxisBoundsManual(true);
+
 
 // as we use dates as labels, the human rounding to nice readable numbers
 // is not necessary
